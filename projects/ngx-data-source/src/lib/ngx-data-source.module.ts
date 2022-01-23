@@ -1,14 +1,8 @@
 import { NgModule } from '@angular/core';
-import { NgxDataSourceComponent } from './ngx-data-source.component';
-
 
 @NgModule({
-  declarations: [
-    NgxDataSourceComponent
-  ],
+  declarations: [],
   imports: [],
-  exports: [
-    NgxDataSourceComponent
-  ]
+  exports: []
 })
 export class NgxDataSourceModule { }

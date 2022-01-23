@@ -9,7 +9,7 @@ import { Indexed } from "./input-pipes/filtering-sorting-data/model";
 import { PipesInputPlummer } from "./input-pipes/model";
 import { PageSize } from "./input-pipes/pagination/model";
 
-export interface CustomDataSource<T, F> {
+export interface NgxDataSource<T, F> {
     connect(): Observable<readonly T[]>,
     disconnect(): void,
     getInputPlummer(): PipesInputPlummer<T, F>,
@@ -17,7 +17,7 @@ export interface CustomDataSource<T, F> {
     getCurrentData(): Indexed<T>[]
 }
 
-export class CustomDataSourceImpl<T, F = T> implements DataSource<T>, CustomDataSource<T, F> {
+export class NgxDataSourceImpl<T, F = T> implements DataSource<T>, NgxDataSource<T, F> {
 
     private _externalUpdates: ExternalUpdatesPipe<T, F>;
     private _dataAndPaginationEventPrescriptionPipeSubscription!: Subscription;
