@@ -1,7 +1,42 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "8d513a37-56a3-4ba5-8387-51a7ef7ac4cb"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "ngx-data-source": {
+      "projectType": "library",
+      "root": "projects/ngx-data-source",
+      "sourceRoot": "projects/ngx-data-source/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-data-source/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-data-source/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-data-source/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-data-source/src/test.ts",
+            "tsConfig": "projects/ngx-data-source/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-data-source/karma.conf.js"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngx-data-source"
 }
