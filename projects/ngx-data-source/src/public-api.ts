@@ -9,7 +9,7 @@ export { PaginatorState, PaginatorStateUpdate, PaginationEventPrescription,
     DataAndPaginationEventPrescription, DataAndPaginatorState } from './lib/data-paginator/model';
 export { DataPaginatorState, DATA_PAGINATOR_FACTORY_TOKEN } from './lib/data-paginator/data-paginator';
 
-export { ExtendedPaginationEventPrescription, Indexed, Filter, Sort, SortFT, CompareFunction,findAnchorIndex, 
+export { ExtendedPaginationEventPrescription, Indexed, Filter, Sort, SortFT, CompareFunction, findAnchorIndex, 
     FilterSortAndDataInputPlummer } from './lib/input-pipes/filtering-sorting-data/model';
 export { DataPipe, DATA_PIPE_FACTORY_TOKEN } from './lib/input-pipes/filtering-sorting-data/data-pipe';
 export { FilterPipe, FILTER_PIPE_FACTORY_TOKEN } from './lib/input-pipes/filtering-sorting-data/filter-pipe';

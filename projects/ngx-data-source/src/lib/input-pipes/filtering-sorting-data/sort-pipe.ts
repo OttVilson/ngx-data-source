@@ -4,7 +4,7 @@ import { map, scan } from "rxjs/operators";
 import { PaginatorState } from "../../data-paginator/model";
 import { PipeInjectionRequisites } from "../model";
 import { SkeletalPipe } from "../skeletal-pipe";
-import { CompareFunction, DirectedSortFT, Indexed, isDirectedSortLT, ExtendedPaginationEventPrescription, 
+import { CompareFunction, DirectedSortFT, Indexed, isDirectedSortFT, ExtendedPaginationEventPrescription, 
     SortFT } from "./model";
 
 export interface SortPipe<T, F = T> {
@@ -70,7 +70,7 @@ export class SortPipeImpl<T, F = T>
     ): DirectedSortFT<Indexed<T>, Indexed<F>>[] {
         let updatedSortState = sortState.filter(sort => currentSort.active !== sort.active);
 
-        if (isDirectedSortLT<Indexed<T>, Indexed<F>>(currentSort))
+        if (isDirectedSortFT<Indexed<T>, Indexed<F>>(currentSort))
             updatedSortState.unshift(currentSort);
 
         return updatedSortState;

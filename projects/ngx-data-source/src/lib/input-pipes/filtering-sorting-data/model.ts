@@ -22,7 +22,7 @@ export interface DirectedSortFT<T, F> extends SortFT<T, F> {
     direction: 'asc' | 'desc';
 }
 
-export const isDirectedSortLT = <T, F>(sort: SortFT<T, F>): sort is DirectedSortFT<T, F> => {
+export const isDirectedSortFT = <T, F>(sort: SortFT<T, F>): sort is DirectedSortFT<T, F> => {
     return !!sort.direction;
 }
 

@@ -16,7 +16,7 @@ export interface DataPaginatorState<T> {
 export const DATA_PAGINATOR_FACTORY_TOKEN = 
     new InjectionToken<<T>(pageSize?: PageSize) => DataPaginatorState<T>>('Data paginator factory DI token'); 
 export const getDataPaginatorStateInjectionRequisites = 
-    <T>(injector?: Injector): PipeInjectionRequisites<DataPaginatorState<T>> => {
+    <T>(injector?: Injector) => {
         return {
             factoryInjectionToken: DATA_PAGINATOR_FACTORY_TOKEN,
             defaultFactory: (pageSize?: PageSize) => new DataPaginatorStateImpl<T>(pageSize),
