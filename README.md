@@ -1,5 +1,5 @@
 # NgxDataSource
-The library is an implementation of DataSource used by e.g. Angular Material table. The library allows a developer to connect page change, page size change, sorting, filtering and dynamically pushing new data into one DataSource which takes care of paginator state, as well as of course sorting and filtering.
+The library is an implementation of the [DataSource](https://github.com/angular/components/blob/master/src/cdk/collections/data-source.ts) used by e.g. [Angular Material table](https://material.angular.io/components/table/overview#datasource). The library allows a developer to connect page change, page size change, sorting, filtering and dynamically pushing new data into one DataSource which takes care of paginator state, as well as of course sorting and filtering.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.7.
 
