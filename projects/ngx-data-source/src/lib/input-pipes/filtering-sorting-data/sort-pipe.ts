@@ -5,18 +5,20 @@ import { PaginatorState } from "../../data-paginator/model";
 import { PipeInjectionRequisites } from "../model";
 import { SkeletalPipe } from "../skeletal-pipe";
 import { CompareFunction, DirectedSortFT, Indexed, isDirectedSortFT, ExtendedPaginationEventPrescription, 
-    SortFT } from "./model";
+    SortFT, 
+    IndexedKeysOfFlattened} from "./model";
 
-export interface SortPipe<T, F = T> {
+export interface SortPipe<T, F = keyof T> {
     connect(rawSortEvents$: Observable<SortFT<T, F>>): void,
     disconnect(): void,
     getStream(): BehaviorSubject<CompareFunction<Indexed<T>>>,
     getPaginationEventPrescription(): ExtendedPaginationEventPrescription<Indexed<T>>,
 }
 
-export const SORT_PIPE_FACTORY_TOKEN = new InjectionToken<<T, F>() => SortPipe<T, F>>('Sort pipe factory DI token');
+export const SORT_PIPE_FACTORY_TOKEN = 
+    new InjectionToken<<T, F = keyof T>() => SortPipe<T, F>>('Sort pipe factory DI token');
 export const getSortPipeInjectionRequisites = 
-    <T, F>(injector?: Injector): PipeInjectionRequisites<SortPipe<T, F>> => {
+    <T, F = keyof T>(injector?: Injector): PipeInjectionRequisites<SortPipe<T, F>> => {
         return {
             factoryInjectionToken: SORT_PIPE_FACTORY_TOKEN,
             defaultFactory: () => new SortPipeImpl<T, F>(),
@@ -24,7 +26,7 @@ export const getSortPipeInjectionRequisites =
         }
     }  
 
-export class SortPipeImpl<T, F = T> 
+export class SortPipeImpl<T, F = keyof T> 
             extends SkeletalPipe<
                         SortFT<T, F>, 
                         CompareFunction<Indexed<T>>, 
@@ -54,8 +56,20 @@ export class SortPipeImpl<T, F = T>
         return new BehaviorSubject<CompareFunction<Indexed<T>>>(this.getInitialDirectedSort().compareFunction);
     }
 
-    private getInitialDirectedSort(): DirectedSortFT<Indexed<T>, Indexed<F>> {
-        const indexedOrdering: DirectedSortFT<Indexed<T>, Indexed<F>> = {
+    private accumulateSort(
+        sortState: DirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>>[],
+        currentSort: SortFT<T, F>
+    ): DirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>>[] {
+        let updatedSortState = sortState.filter(sort => currentSort.active !== sort.active);
+
+        if (isDirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>>(currentSort))
+            updatedSortState.unshift(currentSort);
+
+        return updatedSortState;
+    }
+
+    private getInitialDirectedSort(): DirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>> {
+        const indexedOrdering: DirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>> = {
             active: '_index',
             direction: 'asc',
             compareFunction: (f, s) => f._index - s._index 
@@ -64,24 +78,14 @@ export class SortPipeImpl<T, F = T>
         return indexedOrdering;
     }
 
-    private accumulateSort(
-        sortState: DirectedSortFT<Indexed<T>, Indexed<F>>[],
-        currentSort: SortFT<T, F>
-    ): DirectedSortFT<Indexed<T>, Indexed<F>>[] {
-        let updatedSortState = sortState.filter(sort => currentSort.active !== sort.active);
-
-        if (isDirectedSortFT<Indexed<T>, Indexed<F>>(currentSort))
-            updatedSortState.unshift(currentSort);
-
-        return updatedSortState;
-    }
-
-    private getCompareFunction(sortOrder: DirectedSortFT<Indexed<T>, Indexed<F>>[]): CompareFunction<Indexed<T>> {
+    private getCompareFunction(
+        sortOrder: DirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>>[]
+    ): CompareFunction<Indexed<T>> {
         return (first: Indexed<T>, second: Indexed<T>) => this.compare(sortOrder, first, second);
     }
     
     private compare(
-        sortOrder: DirectedSortFT<Indexed<T>, Indexed<F>>[],
+        sortOrder: DirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>>[],
         first: Indexed<T>, 
         second: Indexed<T>
     ): number {
@@ -93,7 +97,7 @@ export class SortPipeImpl<T, F = T>
         return 0;
     }
 
-    private directionMultiplier(sort: DirectedSortFT<Indexed<T>, Indexed<F>>): number {
+    private directionMultiplier(sort: DirectedSortFT<Indexed<T>, IndexedKeysOfFlattened<F>>): number {
         return sort.direction === 'asc' ? +1 : -1;
     }
 

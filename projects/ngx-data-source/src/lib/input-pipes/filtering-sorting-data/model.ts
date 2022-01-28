@@ -6,6 +6,8 @@ export type ExtendedPaginationEventPrescription<T> =
 
 export type Indexed<T> = T & { _index: number }
 
+export type IndexedKeysOfFlattened<F> = F | '_index';
+
 export type CompareFunction<T> = (first: T, second: T) => number;
 
 export interface Sort {
@@ -13,8 +15,8 @@ export interface Sort {
     direction: 'asc' | 'desc' | ''
 }
 
-export interface SortFT<T, F = T> extends Sort { 
-    active: keyof F & string,
+export interface SortFT<T, F = keyof T> extends Sort { 
+    active: F & string,
     compareFunction: CompareFunction<T> 
 }
 
@@ -36,7 +38,7 @@ export const findAnchorIndex = <T>(
     if (!anchorElement) return 0;
 
     let anchorIndex = binarySearch<Indexed<T>>(data, compareFunction, anchorElement);
-    return preserveUpperBoundIfAnchorElementPositionsOutOfArray(anchorIndex, data);
+    return preserveUpperBoundIfAnchorElementPositionsOutOfNonemptyArray(anchorIndex, data);
 }
 
 export const binarySearch = <T>(
@@ -58,10 +60,11 @@ export const binarySearch = <T>(
     return start;
 }
 
-const preserveUpperBoundIfAnchorElementPositionsOutOfArray = <T>(result: number, data: Indexed<T>[]): number => {
-    if (result === data.length) return data.length - 1;
-    return result;
-}
+const preserveUpperBoundIfAnchorElementPositionsOutOfNonemptyArray = 
+    <T>(result: number, data: Indexed<T>[]): number => {
+        if (data.length && result === data.length) return data.length - 1;
+        return result;
+    }
 
 export const updateLengthForChangedDataAndViaPositioningAnchorElementUpdateAnchorIndex =
     <T>(

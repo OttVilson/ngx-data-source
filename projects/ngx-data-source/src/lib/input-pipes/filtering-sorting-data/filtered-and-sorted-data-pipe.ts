@@ -19,10 +19,10 @@ export interface FilteredAndSortedDataPipe<T, F> {
 
 export const FILTERED_AND_SORTED_DATA_PIPE_FACTORY_TOKEN = 
   new InjectionToken<
-        <T, F>(injector?: Injector) => FilteredAndSortedDataPipe<T, F>
+        <T, F = keyof T>(injector?: Injector) => FilteredAndSortedDataPipe<T, F>
       >('Filtered and sorted data pipe DI token');
 export const getFilteredAndSortedDataPipeInjectionRequisites = 
-  <T, F>(injector?: Injector): PipesCombinatorInjectionRequisites<FilteredAndSortedDataPipe<T, F>> => {
+  <T, F = keyof T>(injector?: Injector): PipesCombinatorInjectionRequisites<FilteredAndSortedDataPipe<T, F>> => {
     return {
       factoryInjectionToken: FILTERED_AND_SORTED_DATA_PIPE_FACTORY_TOKEN,
       defaultFactory: (injector?: Injector) => new FilteredAndSortedDataPipeImpl<T, F>(injector),
@@ -30,7 +30,7 @@ export const getFilteredAndSortedDataPipeInjectionRequisites =
     };
   }
 
-export class FilteredAndSortedDataPipeImpl<T, F = T> 
+export class FilteredAndSortedDataPipeImpl<T, F = keyof T> 
           extends SkeletalPipesCombinator<DataAndPaginationEventPrescription<Indexed<T>>>
           implements FilteredAndSortedDataPipe<T, F> {
 

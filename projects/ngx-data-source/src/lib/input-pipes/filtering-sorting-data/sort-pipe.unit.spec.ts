@@ -13,11 +13,7 @@ type TestObject = {
     array: number[]    
 }
 
-type FlattenedTestObject = {
-    description: string,
-    nestedValue: number,
-    arrayLength: number
-}
+type FlattenedTestObjectKeys = 'description' | 'nestedValue' | 'arrayLength';
 
 function stringCompareFunction(first: string, second: string): number {
     let uFirst = first.toUpperCase();
@@ -28,7 +24,7 @@ function stringCompareFunction(first: string, second: string): number {
     return 0;
 }
 
-const sortEvents: { [key in 'a'|'b'|'c'|'d'|'e'|'f'|'g'|'h'|'i']: SortFT<TestObject, FlattenedTestObject>} = {
+const sortEvents: { [key in 'a'|'b'|'c'|'d'|'e'|'f'|'g'|'h'|'i']: SortFT<TestObject, FlattenedTestObjectKeys>} = {
     a: { active: 'description', direction: '', 
             compareFunction: (f, s) => stringCompareFunction(f.description, s.description) },
     b: { active: 'description', direction: 'asc', 
@@ -50,8 +46,8 @@ const testObjects: Indexed<TestObject>[] = [
 fdescribe('Default Sort Pipe\'s unit tests', () => {
 describe('Input-output piping', () => {
     let scheduler: TestScheduler;
-    let rawSortInput$: HotObservable<SortFT<TestObject, FlattenedTestObject>>;
-    let sortPipe: SortPipe<TestObject, FlattenedTestObject>;
+    let rawSortInput$: HotObservable<SortFT<TestObject, FlattenedTestObjectKeys>>;
+    let sortPipe: SortPipe<TestObject, FlattenedTestObjectKeys>;
     let sortInputMarbles: string;
     let mainThreadMarbles: string;
     let connectSortPipe: () => void = () => sortPipe.connect(rawSortInput$);
