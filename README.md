@@ -1,27 +1,14 @@
-# CustomDataSource
+# NgxDataSource
+The library is an implementation of the [DataSource](https://github.com/angular/components/blob/master/src/cdk/collections/data-source.ts) used by e.g. [Angular Material table](https://material.angular.io/components/table/overview#datasource). The library allows a developer to connect page change, page size change, sorting, filtering and dynamically pushing new data into one DataSource which takes care of paginator state, as well as of course sorting and filtering.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.7.
 
-## Development server
+# How to use
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+* Clone the repository via `git clone git@github.com:OttVilson/ngx-data-source.git`
+* navigate into the created folder via `cd ngx-data-source`
+* run `npm install`
+* run `ng build`
+* navigate to `cd ./dist/ngx-data-source/`
+* run `npm link` (as per https://indepth.dev/posts/1193/create-your-standalone-angular-library-in-10-minutes)
+* navigate to the project where you want to use the library (might be a project for another library as e.g. [ngx-data-source-material-plugins](https://github.com/OttVilson/ngx-data-source-material-plugins)), and run `npm link ngx-data-source`.
